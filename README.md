@@ -94,7 +94,7 @@ The language also contains some build in sets (see below) and a build in `defaul
 
 <idRest> ::= <letter> | <digit> | "_"
 ```
-Most basic properties take the same values as their counterparts in the
+Almost all basic properties take the same values as their counterparts in the
 [standard filter scripts](http://pathofexile.gamepedia.com/Item_filter),
 the only exception being that the equality operator `=` cant be omitted,
 and that names of itemclasses must be complete and written without quotation marks.
