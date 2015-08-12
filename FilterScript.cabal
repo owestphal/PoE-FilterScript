@@ -1,5 +1,5 @@
 name:                FilterLanguageCompiler
-version:             0.0.1.0
+version:             1.0.0.0
 synopsis:            A simplistic scripting language for Path of Exiles itemfilters
 
 license:             BSD3
