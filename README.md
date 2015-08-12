@@ -1,7 +1,7 @@
 # PoE-FilterScript
 A simplistic scripting language to create itemfilters for [Path of Exile](https://www.pathofexile.com/)
 
-# Usage
+## Usage
 To compile a script into a .filter file, simply use the filter language compiler
 (flc) on the source file.
 Just type
@@ -14,10 +14,33 @@ flc <sourceFile> -o <outputFile>
 ```
 if you want to specify the name of the output file.
 (on Windows you can open a command-line in the current directory by
-  `shift + rightclick` into the folder and selecting "Open command window here"
+  `Shift`+`Rightclick` into the folder and selecting "Open command window here"
   from the context menu)
 
-# Syntax
+## The Language
+The language has four types of definitions which are used to create a filter:
+1. Sets: Sets are groups of items that satisfy certain conditions.
+Multiple sets can be combined using the logical operators `+` (or) and `&` (and).
+e.g. `flask + ItemLevel = 50` contains all items that are flasks **or** have itemLevel 50
+and `flask + ItemLevel = 50` contains all items that are flasks **and** have itemLevel 50
+
+2. Styles: A Style describes the way items are displayed.
+Styles can be combined with the `+` operator. If in a combination of styles the same
+property is defined twice (e.g. two different border colors) the latest (rightmost) one
+will override the previous ones.
+
+3. Rules: Rules define how a set of items is displayed, they state if the set should
+be shown (`Show`) or hidden (`Hide`) and what style should be used to display the set.
+
+4. Imports: It is possible to import set and style definitions (but not the rules)
+ from another sourcefile.
+Note: Since imports are recursive (all imports from imported files are also imported)
+ and no checking for circular imports is done, the compiler gets stuck if such a circle
+ exists
+
+The language also contains some build in sets (see below) and a build in `defaultStyle`.
+
+## Syntax
 ```
 <exrp> ::= <import> | <setExpr> | <styleExpr> | <ruleExpr>
 
@@ -61,3 +84,19 @@ if you want to specify the name of the output file.
 
 <idRest> ::= <letter> | <digit> | "_"
 ```
+most basic properties take the same values as their counterparts in the
+[standard filter scripts](http://pathofexile.gamepedia.com/Item_filter),
+the only exception being that the equality operator `=` cant be omitted,
+and that names of itemclasses must be complete and written without quotation marks.
+
+## Build in sets
+`jewels`,`divinationCards`,`normals`,`nonNormals`,`magics`,`rares`,`uniques`,
+`gems`,`activeGems`,`skillGems`,`supportGems`,`weapons`,`axes`,`oneHandAxes`,
+`twoHandAxes`,`bows`,`claws`,`daggers`,`maces`,`oneHandMaces`,`sceptres`,
+`twoHandMaces`,`staves`,`swords`,`oneHandSwords`,`thrustingOneHandSwords`,
+`twoHandSwords`,`wands`,`armour`,`bodyArmour`,`boots`,`gloves`,`helmets`,
+`shields`,`jewellery`,`belts`,`rings`,`amulets`,`quivers`,`flasks`,
+`hybridFlasks`,`lifeFlasks`,`manaFlasks`,`utilityFlasks`,`currency`,
+`fishingRods`,`questItems`,`threeSockets`,`fourSockets`,`fiveSokets`,
+`sixSockets`,`twoLinks`,`threeLinks`,`fourLinks`,`fiveLinks`,`sixLinks`,
+`chromatics`,`mirrors`,`maps`,`mapFragments`,`everything`
