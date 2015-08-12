@@ -31,7 +31,7 @@ The language has four types of definitions which are used to create a filter:
 1. **Sets**: Sets are groups of items that satisfy certain conditions.
 Multiple sets can be combined using the logical operators `+` (or) and `&` (and).  
 e.g. `flask + ItemLevel = 50` contains all items that are flasks **or** have itemLevel 50  
-and `flask + ItemLevel = 50` contains all items that are flasks **and** have itemLevel 50
+and `flask & ItemLevel = 50` contains all items that are flasks **and** have itemLevel 50
 
 2. **Styles**: A Style describes the way items are displayed.
 Styles can be combined with the `+` operator. If in a combination of styles the same
@@ -84,10 +84,12 @@ The language also contains some build in sets (see below) and a build in `defaul
                   | "FontSize" ...
                   | "AlertSound" ...
 
-<ruleExpr> ::= <type> <id> <id>
+<ruleExpr> ::= <type> <setId> <styleId>
 
 <type> ::= "Show" | "Hide"
 
+<setId> ::= <id>
+<styleId> ::= <id>
 <id> ::= <idStart>{<idRest>}
 
 <idStart> ::= <letter>
