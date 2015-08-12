@@ -50,6 +50,8 @@ Note: Since imports are recursive (all imports from imported files are also impo
 
 The language also contains some build in sets (see below) and a build in `defaultStyle`.
 
+[example script](https://github.com/owestphal/PoE-FilterScript/blob/master/examples/ziggy.fs)
+
 ## Syntax
 ```
 <exrp> ::= <import> | <setExpr> | <styleExpr> | <ruleExpr>
