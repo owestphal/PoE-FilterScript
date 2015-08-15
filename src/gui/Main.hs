@@ -13,9 +13,9 @@ main = start gui
 
 gui :: IO ()
 gui = do
-  f <- frame [text := "flc-gui"]
-  source <- button f [text := "select sourcefile", on command := selectFile f]
-  set f [layout := margin 10 (floatCentre (widget source))]
+  f <- frame [text := "flc-gui",position := pt 200 200]
+  source <- button f [text := "Compile File", on command := selectFile f]
+  set f [layout := margin 50 (floatCentre (widget source))]
 
 selectFile :: Window a -> IO ()
 selectFile p = do
@@ -24,7 +24,7 @@ selectFile p = do
     True -- rememberCurrenDir
     True -- allowReadOnly
     "Select File" -- title
-    [("Filter Language Files",["*.fl"]),("Any file",["*"])] -- file type filters
+    [("Filterscript Files ",["*.fs"]),("Any Files",["*"])] -- file type filters
     "" -- directory
     "" -- filename
   maybe
@@ -38,7 +38,7 @@ compileFile p path = do
   exitCode <- waitForProcess process
   output <- hGetContents stdout
   case exitCode of
-    ExitSuccess -> infoDialog p "Sucess" output
+    ExitSuccess -> infoDialog p "Success" output
     ExitFailure _ -> errorDialog p "Error" output
 
 compileProcess :: FilePath -> IO CreateProcess

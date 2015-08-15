@@ -29,7 +29,7 @@ runMain args =
 writeFilter :: OutputName -> Filter -> IO ()
 writeFilter path x = do
   writeFile file $ credits ++ show x
-  putStrLn $ "filter compilation finished"
+  putStrLn $ "filter compiled successfully"
   exitSuccess
   where file = path ++ ".filter"
 
