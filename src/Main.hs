@@ -1,5 +1,8 @@
 module Main where
 
+import           Data.Version         (showVersion)
+import           Paths_FilterScript   (version)
+
 import           EmbeddedLootLanguage
 import           LootScriptLanguage
 import           System.Environment   (getArgs)
@@ -14,22 +17,27 @@ main = do
 
 runMain :: [String] -> IO ()
 runMain args =
-    if null args
-    then abortWithError "no source file specified"
-    else do
-      ppResult <- readFile sourcePath >>= preProcessor
-      eitherDoOrError (writeFilter outputName) $ ppResult >>= translateProgram sourcePath
-    where sourcePath = arg 0
-          outputName | (length args < 3) || not outFlag = "out"
-                     | otherwise = arg 2
-          outFlag = arg 1 == "-o"
-          arg = (args !!)
-          eitherDoOrError = either abortWithError
+  case args of
+    [] -> abortWithError "no source file specified"
+    ["--version"] -> putStrLn $ showVersion version
+    [src] -> compile src $  (fst.dropExt) src ++ ".filter"
+    [src,"-o",dest] -> compile src dest
+    _ -> abortWithError "unrecognized arguments"
+    where dropExt = span (/= '.')
+
+compile :: FilePath -> FilePath -> IO ()
+compile src dest = do
+  ppResult <- preProcessor =<< readFile src
+  eitherDoOrError
+    (writeFilter dest)
+    (ppResult >>= translateProgram src)
+  where eitherDoOrError = either abortWithError
+
 
 writeFilter :: OutputName -> Filter -> IO ()
 writeFilter path x = do
   writeFile file $ credits ++ show x
-  putStrLn $ "filter compiled successfully"
+  putStrLn "filter compiled successfully"
   exitSuccess
   where file = path ++ ".filter"
 
@@ -40,5 +48,6 @@ abortWithError :: String -> IO ()
 abortWithError s = do
   putStrLn $ "filter compilation failed" ++ newline ++ "Error: " ++ s
   exitFailure
+
 
 newline = "\n"
