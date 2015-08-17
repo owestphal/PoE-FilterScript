@@ -12,9 +12,14 @@ function chooseFile() {
 function runFlc(filename) {
   console.log(filename);
   var flc = require("child_process").exec("./flc " + filename, {cwd:"."},
-    function (err, stdout, stderr){
-      alert(stdout.toString());
-      console.log(stdout);
-      console.log(stderr);
+    function (error, stdout, stderr){
+      if (error == true) {
+        console.log(stderr);
+        alert(stderr);
+      }
+      else {
+        console.log(stdout);
+        alert(stdout.toString());
+      }
     });
 };

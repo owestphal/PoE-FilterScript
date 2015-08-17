@@ -8,7 +8,7 @@ app.on('window-all-closed', function() {
 });
 
 app.on('ready', function() {
-  mainWindow = new BrowserWindow({width:150, height:60, resizable:false, center:true});
+  mainWindow = new BrowserWindow({width:143, height:55, resizable:false, center:true});
   mainWindow.setMenuBarVisibility(false);
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
 
