@@ -1,8 +1,17 @@
 button = document.getElementById "runFlc"
 footer = document.getElementById "status"
 
+platform = (require "os").platform()
+exec = require("child_process").exec
+
 runFlc = (args, callback) ->
-  flc = require("child_process").exec "./flc " + args, {cwd:"."}, callback
+  if platform is "win32" or platform is "win64"
+    console.log "windows platform detected"
+    exec "flc.exe " + args, {cwd:"."}, callback
+  else
+    console.log "linux/unix/os x platform detected"
+    exec "./flc " + args, {cwd:"."}, callback
+	
 
 remote = require "remote"
 dialog = remote.require "dialog"
@@ -24,6 +33,7 @@ button.addEventListener "click", chooseFile
 
 version = runFlc "--version", (e, stdout, stderr) ->
   if e isnt null
+    console.log "no version on flc found"
     console.log stderr
   else
     console.log "found flc version " + stdout
