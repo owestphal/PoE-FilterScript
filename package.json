@@ -2,11 +2,12 @@
   "name": "flc-gui",
   "version": "1.0.0",
   "description": "a gui frontend for lfc",
-  "main": "src/javascript/main.js",
+  "main": "src/coffeescript/main.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
+    "prestart" : "coffee -c src/coffeescript",
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
