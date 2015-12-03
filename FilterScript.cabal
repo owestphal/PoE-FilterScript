@@ -5,7 +5,7 @@ synopsis:            A simplistic scripting language for Path of Exiles itemfilt
 license:             BSD3
 license-file:        LICENSE
 author:              Oliver Westphal
-maintainer:          o_westphal@online.de
+maintainer:          o_westphal (a) online.de
 
 category:            Development
 build-type:          Simple
