@@ -23,8 +23,8 @@ Set hammers = (normals + (magics & Quality >= 12) ) & BaseType "Gavel" "Stone Ha
 Set maxQualityNormals = smallItems & (Quality = 20 & normals)
 Set qualityFlasks = flasks & Quality >= 5
 
-Set chaosItems = rares & smallItems & (ItemLevel >= 60 & ItemLevel < 75)
-Set regalItems = rares & smallItems & (ItemLevel >= 75)
+Set chaosItems = rares & (smallItems + bodyArmour) & (ItemLevel >= 60 & ItemLevel < 75)
+Set regalItems = rares & (smallItems + bodyArmour) & (ItemLevel >= 75)
 
 Set highJewellery = rares & jewellery & ItemLevel >= 75
 
