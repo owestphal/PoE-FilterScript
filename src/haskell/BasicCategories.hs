@@ -48,6 +48,7 @@ jewellery = unionAll [belts, rings, amulets]
 belts = itemClass Belts
 rings = itemClass Rings
 amulets = itemClass Amulets
+talismans = amulets `intersect` baseType "Talisman"
 
 quivers = itemClass Quivers
 

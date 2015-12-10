@@ -110,7 +110,7 @@ and that names of itemclasses must be complete and written without quotation mar
 `twoHandAxes`,`bows`,`claws`,`daggers`,`maces`,`oneHandMaces`,`sceptres`,
 `twoHandMaces`,`staves`,`swords`,`oneHandSwords`,`thrustingOneHandSwords`,
 `twoHandSwords`,`wands`,`armour`,`bodyArmour`,`boots`,`gloves`,`helmets`,
-`shields`,`jewellery`,`belts`,`rings`,`amulets`,`quivers`,`flasks`,
+`shields`,`jewellery`,`belts`,`rings`,`amulets`, `talismans`, `quivers`,`flasks`,
 `hybridFlasks`,`lifeFlasks`,`manaFlasks`,`utilityFlasks`,`currency`,
 `fishingRods`,`questItems`,`threeSockets`,`fourSockets`,`fiveSokets`,
 `sixSockets`,`twoLinks`,`threeLinks`,`fourLinks`,`fiveLinks`,`sixLinks`,

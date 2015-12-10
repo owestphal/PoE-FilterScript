@@ -1,5 +1,5 @@
 # a port of ZIGGYD's Loot Filter v1.1
-
+# plus my own rule for highlighting talismans
 # ###############
 # Set definitions
 # ###############
@@ -113,6 +113,8 @@ Style chaosStyle = BorderColor 170 158 130
 Style regalStyle = TextColor 255 255 119 + BackgroundColor 0 0 0 + BorderColor 54 100 146 219
 Style highJewelleryStyle = regalStyle + BorderColor 54 100 146
 
+Style talismanStyle = BorderColor 210 0 0 + AlertSound 2 100
+
 Style chanceBaseStyle = BorderColor 175 96 37 193 + BackgroundColor 31 17 7
 
 Style smallFont = FontSize 30
@@ -147,6 +149,8 @@ Show sixSockets currencyRecipeStyle
 Show hammers currencyRecipeStyle
 Show maxQualityNormals currencyRecipeStyle
 Show qualityFlasks currencyRecipeStyle
+
+Show talismans talismanStyle
 
 Show chaosItems chaosStyle
 
