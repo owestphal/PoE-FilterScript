@@ -7,7 +7,7 @@ should work fine. If it does not work maybe installing the [Haskell Platform](ht
 helps.
 
 You can also build from source using the [Haskell Platform](https://www.haskell.org/platform/) (namley cabal-install).
-For a guide an how to build cabal packages see for example [this](the [Haskell Platform](https://www.haskell.org/platform/)) guide
+For a guide an how to build cabal packages check out [this guide](https://wiki.haskell.org/Cabal-Install#Installing_a_package).
 
 ## Usage
 To compile a script into a .filter file, simply use the filter language compiler
