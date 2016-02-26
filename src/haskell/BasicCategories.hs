@@ -1,12 +1,14 @@
-module BasicCategories where
+module BasicCategories (
+  module BasicCategories,
+  module BaseTypeList
+  ) where
 
+import           BaseTypeList
 import           Category
 
 jewels = itemClass Jewel
 
 divinationCards = itemClass DivinationCard
-
-baseTypes = unionAll.map baseType
 
 normals = rarity EQ Normal
 nonNormals = rarity GT Normal
@@ -43,6 +45,13 @@ boots = itemClass Boots
 gloves = itemClass Gloves
 helmets = itemClass Helmets
 shields = itemClass Shields
+
+pureArmour = unionAll $ zipWith intersect [bodyArmour,boots,gloves,helmets,shields] $ map baseTypes pureArmourBases
+pureEvasion = unionAll $ zipWith intersect [bodyArmour,boots,gloves,helmets,shields] $ map baseTypes pureEvasionBases
+pureEnergyShield = unionAll $ zipWith intersect [bodyArmour,boots,gloves,helmets,shields] $ map baseTypes pureEnergyShieldBases
+armourEvasion = unionAll $ zipWith intersect [bodyArmour,boots,gloves,helmets,shields] $ map baseTypes armourEvasionBases
+armourEnergyShield  = unionAll $ zipWith intersect [bodyArmour,boots,gloves,helmets,shields] $ map baseTypes armourEnergyShieldBases
+evasionEnergyShield = unionAll $ zipWith intersect [bodyArmour,boots,gloves,helmets,shields] $ map baseTypes evasionEnergyShieldBases
 
 jewellery = unionAll [belts, rings, amulets]
 belts = itemClass Belts

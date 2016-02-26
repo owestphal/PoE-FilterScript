@@ -13,6 +13,8 @@ import           Types
 import           EmbeddedLootLanguage
 import           ScriptParser
 
+import           BuildInCategories
+
 translateProgram :: FilePath -> String -> Either String Filter
 translateProgram path s = evalLLM resultM minEnv
     where resultM = either
@@ -22,8 +24,6 @@ translateProgram path s = evalLLM resultM minEnv
 
 type CatDef = (CatName, IntCat)
 type StyleDef = (StyleName, IntStyle)
-
-type RuleDef = (BlockType, CatName, StyleName)
 
 type CatDefTable = [CatDef]
 type StyleDefTable = [StyleDef]
@@ -52,17 +52,23 @@ execLLM m s = snd $ runLLM m s
 
 -- compilation
 compile :: AST -> LLM Filter
-compile ast = liftM makeFilter $ indexDefs ast >> makeRules ast
+compile ast = let (defs, rules) = partitionAST ast
+              in liftM makeFilter $ indexDefs defs >> makeRules rules
 
+-- seperate definitions from rules
+partitionAST :: AST -> ([Definition],[RuleExpr])
+partitionAST (AST es) = go es ([],[])
+  where go [] (ds,rs) = (reverse ds, reverse rs)
+        go (Def d : es') (ds,rs) = go es' (d:ds,rs)
+        go (GeneralRuleExpr r : es') (ds,rs) = go es' (ds,r:rs)
 -- add definitions to the enviroment
-indexDefs :: AST -> LLM ()
-indexDefs (AST xs) = mapM_ addExpr $ filter (not.isRuleExpr) xs
+indexDefs :: [Definition] -> LLM ()
+indexDefs = mapM_ addDef
 
-addExpr :: Expr -> LLM ()
-addExpr (ImportExpr _ ast) = indexDefs ast
-addExpr (CatExpr name def) = addCatDef (name,def)
-addExpr (StyleExpr name def) = addStyleDef (name,def)
-addExpr _ = throwE "unkown expression type"
+addDef :: Definition -> LLM ()
+addDef (ImportExpr _ ast) = indexDefs $ fst $ partitionAST ast
+addDef (CatExpr name def) = addCatDef (name,def)
+addDef (StyleExpr name def) = addStyleDef (name,def)
 
 addCatDef :: CatDef -> LLM ()
 addCatDef (name,def) = do
@@ -81,16 +87,24 @@ addStyleDef (name,def) = do
 nameClash name = throwE $ "duplicate name: " ++ name
 
 -- evaluate enviroment
-makeRules :: AST -> LLM [Rule]
-makeRules (AST xs) = mapM makeRule $ filterMap isRuleExpr expr2Def xs
-    where expr2Def (RuleExpr h x y) = (h,x,y)
-          expr2Def _ = undefined
+makeRules :: [RuleExpr] -> LLM [Rule]
+makeRules = mapM makeRule
 
-makeRule :: RuleDef -> LLM Rule
-makeRule (header, x, y) = do
+makeRule :: RuleExpr -> LLM Rule
+makeRule (SimpleRuleExpr header x y) = do
     cat <- evalCat x
     st <- evalStyle y
     return $ rule header cat st
+makeRule (GlobalRuleExpr grs rs) = do
+  outerRules <- mapM evalPair grs
+  innerRules <- makeRules rs
+  return $ globalRule outerRules innerRules
+
+evalPair :: (CatName,StyleName) -> LLM (Category,Style)
+evalPair (catName,styleName) = do
+  catDef <- evalCat catName
+  styleDef <- evalStyle styleName
+  return (catDef,styleDef)
 
 evalCat :: CatName -> LLM Category
 evalCat name = do
@@ -132,141 +146,3 @@ insertOrClash :: Eq a => (a,b) -> [(a,b)] -> Maybe [(a,b)]
 insertOrClash (n,d) xs = if n `elem` map fst xs
                          then Nothing
                          else Just $ (n,d):xs
-
-isRuleExpr :: Expr -> Bool
-isRuleExpr RuleExpr {} = True
-isRuleExpr _ = False
-
-filterMap :: (a -> Bool) -> (a -> b) -> [a] -> [b]
-filterMap f g = map g . filter f
-
--- --------------------
--- build in definitions
--- --------------------
-buildInCats = zipWith (\x y -> (x, PropCat y)) names functions
-
-names = ["jewels",
-    "divinationCards",
-    "normals",
-    "nonNormals",
-    "magics",
-    "rares",
-    "uniques",
-    "gems",
-    "activeGems",
-    "skillGems",
-    "supportGems",
-    "weapons",
-    "axes",
-    "oneHandAxes",
-    "twoHandAxes",
-    "bows",
-    "claws",
-    "daggers",
-    "maces",
-    "oneHandMaces",
-    "sceptres",
-    "twoHandMaces",
-    "staves",
-    "swords",
-    "oneHandSwords",
-    "thrustingOneHandSwords",
-    "twoHandSwords",
-    "wands",
-    "armour",
-    "bodyArmour",
-    "boots",
-    "gloves",
-    "helmets",
-    "shields",
-    "jewellery",
-    "belts",
-    "rings",
-    "amulets",
-    "talismans",
-    "quivers",
-    "flasks",
-    "hybridFlasks",
-    "lifeFlasks",
-    "manaFlasks",
-    "utilityFlasks",
-    "currency",
-    "fishingRods",
-    "questItems",
-    "threeSockets",
-    "fourSockets",
-    "fiveSokets",
-    "sixSockets",
-    "twoLinks",
-    "threeLinks",
-    "fourLinks",
-    "fiveLinks",
-    "sixLinks",
-    "chromatics",
-    "mirrors",
-    "maps",
-    "mapFragments",
-    "everything"]
-
-functions =[jewels,
-    divinationCards,
-    normals,
-    nonNormals,
-    magics,
-    rares,
-    uniques,
-    gems,
-    activeGems,
-    skillGems,
-    supportGems,
-    weapons,
-    axes,
-    oneHandAxes,
-    twoHandAxes,
-    bows,
-    claws,
-    daggers,
-    maces,
-    oneHandMaces,
-    sceptres,
-    twoHandMaces,
-    staves,
-    swords,
-    oneHandSwords,
-    thrustingOneHandSwords,
-    twoHandSwords,
-    wands,
-    armour,
-    bodyArmour,
-    boots,
-    gloves,
-    helmets,
-    shields,
-    jewellery,
-    belts,
-    rings,
-    amulets,
-    talismans,
-    quivers,
-    flasks,
-    hybridFlasks,
-    lifeFlasks,
-    manaFlasks,
-    utilityFlasks,
-    currency,
-    fishingRods,
-    questItems,
-    threeSockets,
-    fourSockets,
-    fiveSokets,
-    sixSockets,
-    twoLinks,
-    threeLinks,
-    fourLinks,
-    fiveLinks,
-    sixLinks,
-    chromatics,
-    mirrors,
-    maps,
-    mapFragments,
-    everything]

@@ -18,7 +18,7 @@ data Style = Style (Maybe Color) -- background
                    (Maybe Color) -- text
                    (Maybe Int)   -- font size
                    (Maybe (Int,Int))   -- alert sound
-             deriving Show
+             deriving (Show, Eq)
 
 type Color = (Int, Int, Int, Int)
 

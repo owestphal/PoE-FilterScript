@@ -11,12 +11,17 @@ type Source = String
 
 newtype AST = AST [Expr]
 
-data Expr = ImportExpr FilePath AST
-          | CatExpr CatName IntCat
-          | StyleExpr StyleName IntStyle
-          | RuleExpr BlockType CatName StyleName
+data Expr = Def Definition
+          | GeneralRuleExpr RuleExpr
 
--- intermnameiate representations
+data Definition = ImportExpr FilePath AST
+                | CatExpr CatName IntCat
+                | StyleExpr StyleName IntStyle
+
+data RuleExpr = SimpleRuleExpr BlockType CatName StyleName
+              | GlobalRuleExpr [(CatName, StyleName)] [RuleExpr]
+
+-- intermiate representations
 
 data IntCat = IdCat CatName | PropCat Category | OpCat Op IntCat IntCat
 
@@ -30,10 +35,18 @@ instance Show AST where
     show (AST xs) = "AST: \n\n" ++ unlines (map show xs)
 
 instance Show Expr where
-    show (CatExpr name x) = pPrint ["Set", name, "=", indentBelowLine 1 (show x) (length name + 8)]
-    show (StyleExpr name x) = pPrint ["Style", name, "=", show x, "\n"]
-    show (RuleExpr t x y) = pPrint [show t, x, y,"\n"]
-    show (ImportExpr x _) = pPrint ["Import", show x ,"\n"]
+  show (Def d) = show d
+  show (GeneralRuleExpr r) = show r
+
+
+instance Show Definition where
+  show (CatExpr name x) = pPrint ["Set", name, "=", indentBelowLine 1 (show x) (length name + 8)]
+  show (StyleExpr name x) = pPrint ["Style", name, "=", show x, "\n"]
+  show (ImportExpr x _) = pPrint ["Import", show x ,"\n"]
+
+instance Show RuleExpr where
+  show (SimpleRuleExpr t x y) = pPrint [show t, x, y,"\n"]
+  show (GlobalRuleExpr grs rs) = pPrint ["Global", show grs, show rs ,"\n"]
 
 instance Show IntStyle where
     show (IdStyle name) = name

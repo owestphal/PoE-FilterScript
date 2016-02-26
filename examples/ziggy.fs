@@ -38,8 +38,8 @@ Set marakeths = BaseType "Sai" "Fleshripper" "Eclipse Staff" "Dragoon Sword" "Ge
                          "Coronal Maul" "Sacrificial Garb"
 
 Set chanceBases = normals & ItemLevel >= 60 & BaseType "Occultist's Vestment" "Spine Bow" "Prophecy Wand" "Judgement Staff"
-                                                       "Amethyst Ring" "Gold Ring" "Imperial Bow" "Glorious Plate"
-
+                                                       "Amethyst Ring" "Gold Ring" "Imperial Bow" "Glorious Plate" "Siege Axe"
+                                                       
 Set goodFlasks = utilityFlasks
                + ((eternalFlasks + divineFlasks) & ItemLevel < 75)
                + (hallowedFlasks & ItemLevel < 65)
@@ -121,10 +121,16 @@ Style smallFont = FontSize 30
 
 Style hiddenStyle = BackgroundColor 17 17 17 100 + FontSize 26
 
+Style redBackground = BackgroundColor 191 0 0 120
+Style greenBackground = BackgroundColor 0 191 0 120
+Style blueBackground = BackgroundColor 0 0 254 120
+Style redBlueBackground = BackgroundColor 254 213 0 120
+Style redGreenBackground = BackgroundColor 204 0 154 120
+Style greenblueBackground = BackgroundColor 30 144 255 120
+
 # ################
 # Rule definitions
 # ################
-
 Show jewels jewelBorder
 Show mapsAndFragments defaultStyle
 Show divinationCards divCardStyle
@@ -137,6 +143,12 @@ Show qualityGems gemColoredBorder
 Show important defaultStyle
 Show fishingRods rodStyle
 
+Global pureArmour redBackground
+       pureEvasion greenBackground
+       pureEnergyShield blueBackground
+       armourEvasion redBlueBackground
+       armourEnergyShield redGreenBackground
+       evasionEnergyShield greenblueBackground
 Show normalHighLinks normalHighLinkStyle
 Show magicHighLinks magicHighLinkStyle
 Show rareHighLinks rareHighLinkStyle
