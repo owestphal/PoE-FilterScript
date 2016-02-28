@@ -4,6 +4,7 @@ module Category (
   unionAll,
   intersect,
   implementCategory,
+  optimize,
   --
   RarityLevel (..),
   SocketColor (..),
@@ -18,12 +19,15 @@ module Category (
   rarity,
   itemClass,
   baseType,
+  baseTypes,
   sockets,
   linkedSockets,
   socketGroup,
   width,
   height
   ) where
+
+import           Data.List                    (nub)
 
 import           Text.ParserCombinators.ReadP as ReadP
 import           Text.Read                    as Read
@@ -34,20 +38,18 @@ data PrimCat = ItemLevel Ordering Int
              | Quality Ordering Int
              | Rarity Ordering RarityLevel
              | Class ItemClass
-             | BaseType String
+             | BaseType [String]
              | Sockets Ordering Int
              | LinkedSockets Ordering Int
              | SocketGroup ColorList
              | Height Ordering Int
              | Width Ordering Int
-             deriving (Eq, Show)
+             deriving (Eq,Show)
 
 -- TODO: check for valid values
 
 data RarityLevel = Normal | Magic | Rare | Unique
                  deriving (Eq,Show,Read,Enum)
-
-
 
 data SocketColor = Red | Green | Blue | White
                  deriving (Eq,Enum)
@@ -146,6 +148,7 @@ read' x = lift $ do
   _ <- ReadP.string x
   return $ readItemClass x
 
+readItemClass :: String -> ItemClass
 readItemClass "Active Skill Gems" = ActiveSkillGems
 readItemClass "Amulets" = Amulets
 readItemClass "Belts" = Belts
@@ -185,10 +188,12 @@ readItemClass _ = undefined
 
 -- "real" categories
 data Category = Empty | All | Category [[PrimCat]]
-              deriving Show
+  deriving (Show,Eq)
 
+conditions :: Category -> [[PrimCat]]
 conditions (Category xss) = xss
-conditions _ = undefined
+conditions Empty = []
+conditions All = undefined
 
 union :: Category -> Category -> Category
 union Empty x = x
@@ -209,18 +214,56 @@ intersect x y = Category (conditions x `cross` conditions y)
 unionAll :: [Category] -> Category
 unionAll = foldl union Empty
 
+primitive :: PrimCat -> Category
 primitive p = Category [[p]]
 
+-- optimization/simplification functions
+-- optimizes tries to find obviously empty conditions and removes them
+optimize :: Category -> Category
+optimize = filterClassConflicts
+
+filterClassConflicts :: Category -> Category
+filterClassConflicts (Category xss) = Category $ filter (not.hasClassConflict) xss
+filterClassConflicts x = x
+
+hasClassConflict :: [PrimCat] -> Bool
+hasClassConflict = (>1).length.nub.filter isClassCond
+  where isClassCond (Class _) = True
+        isClassCond _         = False
+
+joinBaseTypes :: Category -> Category
+joinBaseTypes Empty = Empty
+joinBaseTypes All = All
+joinBaseTypes (Category xss) = Category $ map (unifyBaseType ([],BaseType [])) xss
+  where unifyBaseType (others, bt) [] = bt:others
+        unifyBaseType (others, BaseType bts) (BaseType x:xs) = unifyBaseType (others, BaseType (x++bts)) xs
+        unifyBaseType (others, bt) (x:xs) = unifyBaseType (x:others, bt) xs
+
 -- generation functions
+nothing :: Category
 nothing = Empty
+everything :: Category
 everything = All
 
+itemLevel :: Ordering -> Int -> Category
+dropLevel :: Ordering -> Int -> Category
+quality :: Ordering -> Int -> Category
+rarity :: Ordering -> RarityLevel -> Category
+itemClass :: ItemClass -> Category
+baseType :: String -> Category
+baseTypes :: [String] -> Category
+sockets :: Ordering -> Int -> Category
+linkedSockets :: Ordering -> Int -> Category
+socketGroup :: ColorList -> Category
+height :: Ordering -> Int -> Category
+width :: Ordering -> Int -> Category
 itemLevel o n = primitive $ ItemLevel o n
 dropLevel o n = primitive $ DropLevel o n
 quality o n = primitive $ Quality o n
 rarity o r = primitive $ Rarity o r
 itemClass c = primitive $ Class c
-baseType t = primitive $ BaseType t
+baseType t = primitive $ BaseType [t]
+baseTypes ts = primitive $ BaseType ts
 sockets o n = primitive $ Sockets o n
 linkedSockets o n = primitive $ LinkedSockets o n
 socketGroup cs = primitive $ SocketGroup cs
@@ -240,7 +283,7 @@ implementPrimCat (DropLevel ord n) = orderedParameter "DropLevel" ord n
 implementPrimCat (Quality ord n) = orderedParameter "Quality" ord n
 implementPrimCat (Rarity ord r) = orderedParameter "Rarity" ord r
 implementPrimCat (Class c) = genericParameter "Class" (show c)
-implementPrimCat (BaseType s) = genericParameter "BaseType" s
+implementPrimCat (BaseType ts) = parameter "BaseType" $ unwords $ map show ts
 implementPrimCat (Sockets ord n) = orderedParameter "Sockets" ord n
 implementPrimCat (LinkedSockets ord n) = orderedParameter "LinkedSockets" ord n
 implementPrimCat (SocketGroup cs) = genericParameter "SocketGroup" cs
@@ -261,4 +304,5 @@ comperator LT = "< "
 comperator EQ = " "
 comperator GT = "> "
 
+newline :: String
 newline = "\n"

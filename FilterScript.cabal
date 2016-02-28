@@ -1,5 +1,5 @@
 name:                FilterScript
-version:             1.0.2.1
+version:             1.1.0.0
 synopsis:            A simplistic scripting language for Path of Exiles itemfilters
 
 license:             BSD3
@@ -18,7 +18,10 @@ library
   other-modules:       Category,
                        Style,
                        Filter,
-                       BasicCategories
+                       BasicCategories,
+                       BaseTypeList
+
+  ghc-options:         -Wall -O2
   build-depends:       base
   hs-source-dirs:      src/haskell
   default-language:    Haskell2010
@@ -27,6 +30,7 @@ executable flc
   main-is:             Main.hs
   other-modules:       LootScriptLanguage,
                        ScriptParser,
+                       BuildInCategories,
                        Types,
                        Paths_FilterScript
 

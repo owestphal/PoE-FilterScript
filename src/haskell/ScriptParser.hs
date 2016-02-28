@@ -11,6 +11,8 @@ import           Text.Parsec.Language          (emptyDef)
 import qualified Text.Parsec.Token             as P
 import           Text.ParserCombinators.Parsec
 
+import           Control.Monad                 (liftM)
+
 import           EmbeddedLootLanguage
 import           Types
 
@@ -74,11 +76,14 @@ sourceFile = do
     return $ AST xs
 
 expr :: Parser Expr
-expr = try importExpr
-    <|> try setExpr
-    <|> try styleExpr
-    <|> ruleExpr
+expr = try (liftM Def def)
+    <|> generalRuleExpr
 
+def = try importExpr
+    <|> try setExpr
+    <|> styleExpr
+
+-- imports
 importExpr = do
     reserved "Import"
     path <- stringLiteral
@@ -92,8 +97,8 @@ setExpr = do
     reserved "Set"
     name <- identifier
     operator "="
-    def <- setDef
-    return $ CatExpr name def
+    d <- setDef
+    return $ CatExpr name d
 
 setDef :: Parser IntCat
 setDef = lexeme $ buildExpressionParser opTable (parens setDef <|> propCat <|> idCat)
@@ -133,8 +138,8 @@ styleExpr = do
     reserved "Style"
     name <- identifier
     operator "="
-    def <- styleDef
-    return $ StyleExpr name def
+    d <- styleDef
+    return $ StyleExpr name d
 
 styleDef = lexeme $ buildExpressionParser table (propStyle <|> idStyle)
     where table = [[Infix (operator "+" >> return CombStyle) AssocLeft]]
@@ -153,11 +158,27 @@ propStyle = do
                          , keywordParameterConstructor "AlertSound"         soundParam alertSound ]
 
 -- rules
-ruleExpr = do
+generalRuleExpr = liftM GeneralRuleExpr ruleExpr
+
+ruleExpr :: Parser RuleExpr
+ruleExpr = try globalRuleExpr
+          <|> simpleRuleExpr
+
+globalRuleExpr = do
+  reserved "Global"
+  globalRules <- many1 idPair
+  rules <- braces (many ruleExpr)
+  return $ GlobalRuleExpr globalRules rules
+
+simpleRuleExpr = do
     block <- blockType
-    setId <- identifier
-    styleId <- identifier
-    return $ RuleExpr block setId styleId
+    (setId,styleId) <- idPair
+    return $ SimpleRuleExpr block setId styleId
+
+idPair = do
+  id1 <- identifier
+  id2 <- identifier
+  return (id1,id2)
 
 blockType = header "Show"
     <|> header "Hide"
@@ -253,6 +274,7 @@ natural = P.natural lexer
 symbol = P.symbol lexer
 
 parens = P.parens lexer
+braces = P.braces lexer
 semi = P.semi lexer
 whiteSpace = P.whiteSpace lexer
 
@@ -277,6 +299,7 @@ keywords = ["Import"
            ,"Style"
            ,"Show"
            ,"Hide"
+           ,"Global"
            ,"ItemLevel"
            ,"DropLevel"
            ,"Quality"
