@@ -124,7 +124,7 @@ propCat = do
                        keywordParameterConstructor "SocketGroup"    colorList socketGroup,
                        keywordParameterConstructor "Rarity"         ordRar (uncurry rarity),
                        keywordParameterConstructor "ItemClass"      iClass itemClass,
-                       keywordParameterConstructor "BaseType"       (try $ many stringLiteral) baseTypes,
+                       keywordParameterConstructor "BaseType"       (try $ many1 stringLiteral) baseTypes,
                        keywordParameterConstructor "Width"          ordInt (uncurry width),
                        keywordParameterConstructor "Heigth"         ordInt (uncurry height)]
 
