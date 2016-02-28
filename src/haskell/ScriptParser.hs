@@ -162,18 +162,17 @@ generalRuleExpr = liftM GeneralRuleExpr ruleExpr
 
 ruleExpr :: Parser RuleExpr
 ruleExpr = try globalRuleExpr
-    <|> simpleRuleExpr
+          <|> simpleRuleExpr
 
 globalRuleExpr = do
   reserved "Global"
   globalRules <- many1 idPair
-  rules <- many ruleExpr
+  rules <- braces (many ruleExpr)
   return $ GlobalRuleExpr globalRules rules
 
 simpleRuleExpr = do
     block <- blockType
-    setId <- identifier
-    styleId <- identifier
+    (setId,styleId) <- idPair
     return $ SimpleRuleExpr block setId styleId
 
 idPair = do
@@ -275,6 +274,7 @@ natural = P.natural lexer
 symbol = P.symbol lexer
 
 parens = P.parens lexer
+braces = P.braces lexer
 semi = P.semi lexer
 whiteSpace = P.whiteSpace lexer
 

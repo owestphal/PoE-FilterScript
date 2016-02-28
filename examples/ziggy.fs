@@ -5,7 +5,15 @@
 # ###############
 
 Set mapsAndFragments = maps + mapFragments
-
+Set midTierMaps = nonUniques & BaseType "Waste Pool" "Mine" "Jungle Valley" "Terrace" "Torture Chamber"
+                                        "Canyon" "Dry Peninsula" "Dark Forest" "Cells" "Orchard"
+                                        "Gorge" "Arid Lake" "Underground River" "Residence" "Malformation"
+                                        "Plateau" "Volcano" "Bazaar" "Necropolis"
+                                        "Precinct" "Academy" "Crematorium"
+Set highTierMaps = nonUniques & BaseType "Shipyard" "Overgrown Ruin" "Arsenal" "Village Ruin"
+                                         "Wasteland" "Waterways" "Courtyard" "Excavation"
+                                         "Conservatory" "Shrine" "Palace"
+                                         "Colosseum" "Abyss" "Core"
 Set highCurrency = BaseType "Exalted Orb" "Eternal Orb" "Divine Orb"
 
 Set midCurrency = BaseType "Chaos Orb" "Gemcutter's Prism" "Regal Orb" "Orb of Alchemy" "Vaal Orb" "Orb of Fusing"
@@ -39,7 +47,7 @@ Set marakeths = BaseType "Sai" "Fleshripper" "Eclipse Staff" "Dragoon Sword" "Ge
 
 Set chanceBases = normals & ItemLevel >= 60 & BaseType "Occultist's Vestment" "Spine Bow" "Prophecy Wand" "Judgement Staff"
                                                        "Amethyst Ring" "Gold Ring" "Imperial Bow" "Glorious Plate" "Siege Axe"
-                                                       
+
 Set goodFlasks = utilityFlasks
                + ((eternalFlasks + divineFlasks) & ItemLevel < 75)
                + (hallowedFlasks & ItemLevel < 65)
@@ -87,6 +95,9 @@ Set normalsWhileLvling = ItemLevel < 12
 # Style definitions
 # #################
 
+Style midTierMapBorder = BorderColor 254 213 0
+Style highTierMapBorder = BorderColor 191 0 0
+
 Style jewelBorder = BorderColor 98 0 255
 Style divCardStyle = BorderColor 153 255 255 + FontSize 37 + AlertSound 9 88
 
@@ -111,7 +122,7 @@ Style currencyRecipeStyle = BackgroundColor 33 30 26 + BorderColor 128 119 99
 
 Style chaosStyle = BorderColor 170 158 130
 Style regalStyle = TextColor 255 255 119 + BackgroundColor 0 0 0 + BorderColor 54 100 146 219
-Style highJewelleryStyle = regalStyle + BorderColor 54 100 146
+Style highJewelleryStyle = regalStyle + TextColor 255 255 51
 
 Style talismanStyle = BorderColor 210 0 0 + AlertSound 2 100
 
@@ -131,8 +142,15 @@ Style greenblueBackground = BackgroundColor 30 144 255 120
 # ################
 # Rule definitions
 # ################
+
 Show jewels jewelBorder
-Show mapsAndFragments defaultStyle
+
+Global midTierMaps midTierMapBorder
+       highTierMaps highTierMapBorder
+{
+  Show mapsAndFragments defaultStyle
+}
+
 Show divinationCards divCardStyle
 
 Show highCurrency highCurrStyle
@@ -149,31 +167,36 @@ Global pureArmour redBackground
        armourEvasion redBlueBackground
        armourEnergyShield redGreenBackground
        evasionEnergyShield greenblueBackground
-Show normalHighLinks normalHighLinkStyle
-Show magicHighLinks magicHighLinkStyle
-Show rareHighLinks rareHighLinkStyle
-Show uniqueHighLinks uniqueHighLinkStyle
+{
+  Show normalHighLinks normalHighLinkStyle
+  Show magicHighLinks magicHighLinkStyle
+  Show rareHighLinks rareHighLinkStyle
+  Show uniqueHighLinks uniqueHighLinkStyle
 
-Show uniques uniqueFont
+  Show uniques uniqueFont
 
-Show chromatics currencyRecipeStyle
-Show sixSockets currencyRecipeStyle
+  Show chromatics currencyRecipeStyle
+  Show sixSockets currencyRecipeStyle
+  Show maxQualityNormals currencyRecipeStyle
+
+  Show chaosItems chaosStyle
+  Show regalItems regalStyle
+
+  Show lowFourLinks defaultStyle
+  Show lowThreeLinks defaultStyle
+
+  Show marakeths defaultStyle
+  Show chanceBases chanceBaseStyle
+
+  Show normalsWhileLvling smallFont
+}
+
 Show hammers currencyRecipeStyle
-Show maxQualityNormals currencyRecipeStyle
 Show qualityFlasks currencyRecipeStyle
 
 Show talismans talismanStyle
 
-Show chaosItems chaosStyle
-
 Show highJewellery highJewelleryStyle
-Show regalItems regalStyle
-
-Show lowFourLinks defaultStyle
-Show lowThreeLinks defaultStyle
-
-Show marakeths defaultStyle
-Show chanceBases chanceBaseStyle
 
 Show goodFlasks defaultStyle
 Hide badFlasks hiddenStyle
@@ -184,6 +207,5 @@ Show quivers defaultStyle
 
 Show rares defaultStyle
 
-Show normalsWhileLvling smallFont
 
 Hide everything hiddenStyle

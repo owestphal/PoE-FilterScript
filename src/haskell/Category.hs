@@ -27,7 +27,7 @@ module Category (
   height
   ) where
 
-import           Data.List                    (intersperse, nub)
+import           Data.List                    (nub)
 
 import           Text.ParserCombinators.ReadP as ReadP
 import           Text.Read                    as Read
@@ -148,6 +148,7 @@ read' x = lift $ do
   _ <- ReadP.string x
   return $ readItemClass x
 
+readItemClass :: String -> ItemClass
 readItemClass "Active Skill Gems" = ActiveSkillGems
 readItemClass "Amulets" = Amulets
 readItemClass "Belts" = Belts
@@ -186,16 +187,13 @@ readItemClass "Wands" = Wands
 readItemClass _ = undefined
 
 -- "real" categories
-data Category = Empty | All | Category [[PrimCat]] | CategoryN [Condition]
+data Category = Empty | All | Category [[PrimCat]]
   deriving (Show,Eq)
 
-data Condition = Condition { general :: [PrimCat]
-                           , cl      :: PrimCat
-                           , base    :: PrimCat }
-  deriving (Show,Eq)
-
+conditions :: Category -> [[PrimCat]]
 conditions (Category xss) = xss
-conditions _ = undefined
+conditions Empty = []
+conditions All = undefined
 
 union :: Category -> Category -> Category
 union Empty x = x
@@ -216,6 +214,7 @@ intersect x y = Category (conditions x `cross` conditions y)
 unionAll :: [Category] -> Category
 unionAll = foldl union Empty
 
+primitive :: PrimCat -> Category
 primitive p = Category [[p]]
 
 -- optimization/simplification functions
@@ -233,15 +232,31 @@ hasClassConflict = (>1).length.nub.filter isClassCond
         isClassCond _         = False
 
 joinBaseTypes :: Category -> Category
+joinBaseTypes Empty = Empty
+joinBaseTypes All = All
 joinBaseTypes (Category xss) = Category $ map (unifyBaseType ([],BaseType [])) xss
   where unifyBaseType (others, bt) [] = bt:others
         unifyBaseType (others, BaseType bts) (BaseType x:xs) = unifyBaseType (others, BaseType (x++bts)) xs
         unifyBaseType (others, bt) (x:xs) = unifyBaseType (x:others, bt) xs
 
 -- generation functions
+nothing :: Category
 nothing = Empty
+everything :: Category
 everything = All
 
+itemLevel :: Ordering -> Int -> Category
+dropLevel :: Ordering -> Int -> Category
+quality :: Ordering -> Int -> Category
+rarity :: Ordering -> RarityLevel -> Category
+itemClass :: ItemClass -> Category
+baseType :: String -> Category
+baseTypes :: [String] -> Category
+sockets :: Ordering -> Int -> Category
+linkedSockets :: Ordering -> Int -> Category
+socketGroup :: ColorList -> Category
+height :: Ordering -> Int -> Category
+width :: Ordering -> Int -> Category
 itemLevel o n = primitive $ ItemLevel o n
 dropLevel o n = primitive $ DropLevel o n
 quality o n = primitive $ Quality o n
@@ -289,4 +304,5 @@ comperator LT = "< "
 comperator EQ = " "
 comperator GT = "> "
 
+newline :: String
 newline = "\n"

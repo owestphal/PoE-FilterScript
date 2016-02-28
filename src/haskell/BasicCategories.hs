@@ -15,6 +15,7 @@ nonNormals = rarity GT Normal
 magics = rarity EQ Magic
 rares = rarity EQ Rare
 uniques = rarity EQ Unique
+nonUniques = rarity LT Unique
 
 gems = activeGems `union` supportGems
 activeGems = itemClass ActiveSkillGems
