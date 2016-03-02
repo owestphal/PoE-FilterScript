@@ -1,19 +1,18 @@
-# a port of ZIGGYD's Loot Filter v1.1
-# plus my own rule for highlighting talismans
+# an example filter based on ZIGGYD's Loot Filter v1.1
+# with some global rules added
 # ###############
 # Set definitions
 # ###############
-
-Set mapsAndFragments = maps + mapFragments
-Set midTierMaps = nonUniques & BaseType "Waste Pool" "Mine" "Jungle Valley" "Terrace" "Torture Chamber"
-                                        "Canyon" "Dry Peninsula" "Dark Forest" "Cells" "Orchard"
-                                        "Gorge" "Arid Lake" "Underground River" "Residence" "Malformation"
-                                        "Plateau" "Volcano" "Bazaar" "Necropolis"
-                                        "Precinct" "Academy" "Crematorium"
-Set highTierMaps = nonUniques & BaseType "Shipyard" "Overgrown Ruin" "Arsenal" "Village Ruin"
-                                         "Wasteland" "Waterways" "Courtyard" "Excavation"
-                                         "Conservatory" "Shrine" "Palace"
-                                         "Colosseum" "Abyss" "Core"
+Set overgrownShrineMap = BaseType "Overgrown Shrine" # needed to resolve name clash with BaseType "Shrine"
+Set midTierMaps = BaseType "Waste Pool" "Mine" "Jungle Valley" "Terrace" "Torture Chamber"
+                            "Canyon" "Dry Peninsula" "Dark Forest" "Cells" "Orchard"
+                            "Gorge" "Arid Lake" "Underground River" "Residence" "Malformation"
+                            "Plateau" "Volcano" "Bazaar" "Necropolis"
+                            "Precinct" "Academy" "Crematorium"
+Set highTierMaps = BaseType "Shipyard" "Overgrown Ruin" "Arsenal" "Village Ruin"
+                            "Wasteland" "Waterways" "Courtyard" "Excavation"
+                            "Conservatory" "Shrine" "Palace"
+                            "Colosseum" "Abyss" "Core"
 Set highCurrency = BaseType "Exalted Orb" "Eternal Orb" "Divine Orb"
 
 Set midCurrency = BaseType "Chaos Orb" "Gemcutter's Prism" "Regal Orb" "Orb of Alchemy" "Vaal Orb" "Orb of Fusing"
@@ -95,8 +94,9 @@ Set normalsWhileLvling = ItemLevel < 12
 # Style definitions
 # #################
 
-Style midTierMapBorder = BorderColor 254 213 0
-Style highTierMapBorder = BorderColor 191 0 0
+Style whiteBorder = BorderColor 255 255 255
+Style midTierMapBorder = BorderColor 171 143 0
+Style highTierMapBorder = BorderColor 112 0 0
 
 Style jewelBorder = BorderColor 98 0 255
 Style divCardStyle = BorderColor 153 255 255 + FontSize 37 + AlertSound 9 88
@@ -132,12 +132,12 @@ Style smallFont = FontSize 30
 
 Style hiddenStyle = BackgroundColor 17 17 17 100 + FontSize 26
 
-Style redBackground = BackgroundColor 191 0 0 120
-Style greenBackground = BackgroundColor 0 191 0 120
-Style blueBackground = BackgroundColor 0 0 254 120
-Style redBlueBackground = BackgroundColor 254 213 0 120
-Style redGreenBackground = BackgroundColor 204 0 154 120
-Style greenblueBackground = BackgroundColor 30 144 255 120
+Style redBackground = BackgroundColor 125 16 16
+Style greenBackground = BackgroundColor 21 99 21
+Style blueBackground = BackgroundColor 82 82 227
+Style yellowBackground = BackgroundColor 173 155 14
+Style magentaBackground = BackgroundColor 195 57 166
+Style cyanBackground = BackgroundColor 33 112 96
 
 # ################
 # Rule definitions
@@ -145,10 +145,13 @@ Style greenblueBackground = BackgroundColor 30 144 255 120
 
 Show jewels jewelBorder
 
-Global midTierMaps midTierMapBorder
+Show mapFragments defaultStyle
+
+Global overgrownShrineMap whiteBorder
+       midTierMaps midTierMapBorder
        highTierMaps highTierMapBorder
 {
-  Show mapsAndFragments defaultStyle
+  Show maps whiteBorder
 }
 
 Show divinationCards divCardStyle
@@ -161,12 +164,16 @@ Show qualityGems gemColoredBorder
 Show important defaultStyle
 Show fishingRods rodStyle
 
+Show talismans talismanStyle
+
+Show highJewellery highJewelleryStyle
+
 Global pureArmour redBackground
        pureEvasion greenBackground
        pureEnergyShield blueBackground
-       armourEvasion redBlueBackground
-       armourEnergyShield redGreenBackground
-       evasionEnergyShield greenblueBackground
+       armourEvasion yellowBackground
+       armourEnergyShield magentaBackground
+       evasionEnergyShield cyanBackground
 {
   Show normalHighLinks normalHighLinkStyle
   Show magicHighLinks magicHighLinkStyle
@@ -194,10 +201,6 @@ Global pureArmour redBackground
 Show hammers currencyRecipeStyle
 Show qualityFlasks currencyRecipeStyle
 
-Show talismans talismanStyle
-
-Show highJewellery highJewelleryStyle
-
 Show goodFlasks defaultStyle
 Hide badFlasks hiddenStyle
 
@@ -205,7 +208,13 @@ Hide badJewellery hiddenStyle
 Show jewellery defaultStyle
 Show quivers defaultStyle
 
-Show rares defaultStyle
-
-
-Hide everything hiddenStyle
+Global pureArmour redBackground
+       pureEvasion greenBackground
+       pureEnergyShield blueBackground
+       armourEvasion yellowBackground
+       armourEnergyShield magentaBackground
+       evasionEnergyShield cyanBackground
+{
+  Show rares defaultStyle
+  Hide everything hiddenStyle
+}
