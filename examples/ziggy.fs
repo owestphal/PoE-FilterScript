@@ -4,15 +4,16 @@
 # Set definitions
 # ###############
 Set overgrownShrineMap = BaseType "Overgrown Shrine" # needed to resolve name clash with BaseType "Shrine"
-Set midTierMaps = BaseType "Waste Pool" "Mine" "Jungle Valley" "Terrace" "Torture Chamber"
+Set midTierMaps = BaseType "Waste Pool" "Abandoned Cavern" "Jungle Valley" "Terrace" "Torture Chamber"
                             "Canyon" "Dry Peninsula" "Dark Forest" "Cells" "Orchard"
                             "Gorge" "Arid Lake" "Underground River" "Residence" "Malformation"
-                            "Plateau" "Volcano" "Bazaar" "Necropolis"
+                            "Plateau" "Volcano" "Bazaar" "Necropolis" "Chateau Map"
                             "Precinct" "Academy" "Crematorium"
 Set highTierMaps = BaseType "Shipyard" "Overgrown Ruin" "Arsenal" "Village Ruin"
                             "Wasteland" "Waterways" "Courtyard" "Excavation"
                             "Conservatory" "Shrine" "Palace"
                             "Colosseum" "Abyss" "Core"
+Set coins = BaseType "Perandus Coin"
 Set highCurrency = BaseType "Exalted Orb" "Eternal Orb" "Divine Orb"
 
 Set midCurrency = BaseType "Chaos Orb" "Gemcutter's Prism" "Regal Orb" "Orb of Alchemy" "Vaal Orb" "Orb of Fusing"
@@ -94,6 +95,8 @@ Set normalsWhileLvling = ItemLevel < 12
 # Style definitions
 # #################
 
+Style coinStyle = BorderColor 170 158 130 + FontSize 38
+
 Style whiteBorder = BorderColor 255 255 255
 Style midTierMapBorder = BorderColor 171 143 0
 Style highTierMapBorder = BorderColor 112 0 0
@@ -116,33 +119,35 @@ Style uniqueHighLinkStyle = TextColor 175 96 37 + BackgroundColor 31 15 2 + Bord
 Style highLinkFont = FontSize 42
 Style highLinkSound = AlertSound 1 100
 
-Style uniqueFont = FontSize 36
+Style uniqueStyle = FontSize 36 + TextColor 175 96 37 + BorderColor 175 96 37
 
 Style currencyRecipeStyle = BackgroundColor 33 30 26 + BorderColor 128 119 99
 
-Style chaosStyle = BorderColor 170 158 130
-Style regalStyle = TextColor 255 255 119 + BackgroundColor 0 0 0 + BorderColor 54 100 146 219
+Style chaosStyle = BackgroundColor 170 158 130 200
+Style regalStyle = TextColor 255 255 119 + BackgroundColor 54 100 146 200
 Style highJewelleryStyle = regalStyle + TextColor 255 255 51
 
 Style talismanStyle = BorderColor 210 0 0 + AlertSound 2 100
 
-Style chanceBaseStyle = BorderColor 175 96 37 193 + BackgroundColor 31 17 7
+Style chanceBaseStyle = BackgroundColor 175 96 37 193
+
+Style utilityFlaskStyle = BorderColor 128 254 128
 
 Style smallFont = FontSize 30
 
 Style hiddenStyle = BackgroundColor 17 17 17 100 + FontSize 26
 
-Style redBackground = BackgroundColor 125 16 16
-Style greenBackground = BackgroundColor 21 99 21
-Style blueBackground = BackgroundColor 82 82 227
-Style yellowBackground = BackgroundColor 173 155 14
-Style magentaBackground = BackgroundColor 195 57 166
-Style cyanBackground = BackgroundColor 33 112 96
+Style redBorder = BorderColor 125 16 16
+Style greenBorder = BorderColor 21 99 21
+Style blueBorder = BorderColor 82 82 227
+Style yellowBorder = BorderColor 173 155 14
+Style magentaBorder = BorderColor 195 57 166
+Style cyanBorder = BorderColor 33 112 96
 
 # ################
 # Rule definitions
 # ################
-
+Show coins coinStyle
 Show jewels jewelBorder
 
 Show mapFragments defaultStyle
@@ -168,24 +173,33 @@ Show talismans talismanStyle
 
 Show highJewellery highJewelleryStyle
 
-Global pureArmour redBackground
-       pureEvasion greenBackground
-       pureEnergyShield blueBackground
-       armourEvasion yellowBackground
-       armourEnergyShield magentaBackground
-       evasionEnergyShield cyanBackground
+Global pureArmour redBorder
+       pureEvasion greenBorder
+       pureEnergyShield blueBorder
+       armourEvasion yellowBorder
+       armourEnergyShield magentaBorder
+       evasionEnergyShield cyanBorder
 {
   Show normalHighLinks normalHighLinkStyle
   Show magicHighLinks magicHighLinkStyle
   Show rareHighLinks rareHighLinkStyle
-  Show uniqueHighLinks uniqueHighLinkStyle
 
-  Show uniques uniqueFont
+}
 
-  Show chromatics currencyRecipeStyle
-  Show sixSockets currencyRecipeStyle
-  Show maxQualityNormals currencyRecipeStyle
+Show uniqueHighLinks uniqueHighLinkStyle
+Show uniques uniqueStyle
 
+Show chromatics currencyRecipeStyle
+Show sixSockets currencyRecipeStyle
+Show maxQualityNormals currencyRecipeStyle
+
+Global pureArmour redBorder
+       pureEvasion greenBorder
+       pureEnergyShield blueBorder
+       armourEvasion yellowBorder
+       armourEnergyShield magentaBorder
+       evasionEnergyShield cyanBorder
+{
   Show chaosItems chaosStyle
   Show regalItems regalStyle
 
@@ -194,27 +208,30 @@ Global pureArmour redBackground
 
   Show marakeths defaultStyle
   Show chanceBases chanceBaseStyle
-
-  Show normalsWhileLvling smallFont
 }
 
 Show hammers currencyRecipeStyle
-Show qualityFlasks currencyRecipeStyle
 
-Show goodFlasks defaultStyle
+Global utilityFlasks utilityFlaskStyle
+{
+  Show qualityFlasks currencyRecipeStyle
+  Show goodFlasks defaultStyle
+}
+
 Hide badFlasks hiddenStyle
 
 Hide badJewellery hiddenStyle
 Show jewellery defaultStyle
 Show quivers defaultStyle
 
-Global pureArmour redBackground
-       pureEvasion greenBackground
-       pureEnergyShield blueBackground
-       armourEvasion yellowBackground
-       armourEnergyShield magentaBackground
-       evasionEnergyShield cyanBackground
+Global pureArmour redBorder
+       pureEvasion greenBorder
+       pureEnergyShield blueBorder
+       armourEvasion yellowBorder
+       armourEnergyShield magentaBorder
+       evasionEnergyShield cyanBorder
 {
+  Show normalsWhileLvling smallFont
   Show rares defaultStyle
   Hide everything hiddenStyle
 }
