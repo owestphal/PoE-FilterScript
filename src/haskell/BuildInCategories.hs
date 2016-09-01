@@ -1,11 +1,23 @@
-module BuildInCategories where
+module BuildInCategories (
+    buildInCats
+    ) where
 
 import           EmbeddedLootLanguage
 import           Types
 
 buildInCats = zipWith (\x y -> (x, PropCat y)) names functions
 
-names = ["jewels",
+names = [
+  "lowTierMaps",
+  "lowTierShapedMaps",
+  "midTierMaps",
+  "midTierShapedMaps",
+  "highTierMaps",
+  "highTierShapedMaps",
+  "lowTierMaps",
+  "midTierMaps",
+  "highTierMaps",
+  "jewels",
   "divinationCards",
   "normals",
   "nonNormals",
@@ -75,7 +87,14 @@ names = ["jewels",
   "mapFragments",
   "everything"]
 
-functions =[jewels,
+functions =[
+  lowTierMaps,
+  lowTierShapedMaps,
+  midTierMaps,
+  midTierShapedMaps,
+  highTierMaps,
+  highTierShapedMaps,
+  jewels,
   divinationCards,
   normals,
   nonNormals,
@@ -144,3 +163,7 @@ functions =[jewels,
   maps,
   mapFragments,
   everything]
+
+-- tests
+lengthMatch :: Bool
+lengthMatch = length names == length functions

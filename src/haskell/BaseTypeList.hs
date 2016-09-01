@@ -1,5 +1,50 @@
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
 module BaseTypeList where
 
+-- maps
+lowTierMapBases = ["Arcade Map","Crystal Ore Map","Desert Map","Jungle Valley Map","Beach Map",
+    "Factory Map","Ghetto Map","Oasis Map","Arid Lake Map","Cavern Map","Channel Map",
+    "Grotto Map","Marshes Map","Sewer Map","Vaal Pyramid Map","Academy Map","Acid Lakes Map",
+    "Dungeon Map","Graveyard Map","Phantasmagoria Map","Villa Map","Waste Pool Map",
+    "Burial Chambers Map","Peninsula Map","Dunes Map","Mesa Map","Pit Map","Primordial Pool Map",
+    "Spider Lair Map","Tower Map","Canyon Map","Quarry Map","Racecourse Map","Ramparts Map",
+    "Spider Forest Map","Strand Map","Thicket Map","Vaal City Map","Wharf Map"]
+lowTierShapedBases = ["Shaped Arcade Map","Shaped Crystal Ore Map","Shaped Desert Map",
+    "Shaped Jungle Valley Map"]
+midTierMapBases = ["Arachnid Tomb Map","Castle Ruins Map","Catacombs Map","Cells Map",
+    "Armory Map","Ashen Wood Map","Mud Geyser Map","Arachnid Nest Map","Arena Map",
+    "Bog Map","Cemetery Map","Barrows Map","Atoll Map","Pier Map","Shore Map",
+    "Tropical Island Map","Coves Map","Crypt Map","Museum Map","Orchard Map",
+    "Overgrown Shrine Map","Promenade Map","Reef Map","Temple Map","Colonnade Map",
+    "Arsenal Map","Courtyard Map","Malformation Map","Quay Map","Terrace Map",
+    "Underground River Map","Bazaar Map","Chateau Map","Excavation Map",
+    "Precinct Map","Torture Chamber Map","Underground Sea Map","Wasteland Map"]
+midTierShapedBases = ["Shaped Beach Map","Shaped Factory Map","Shaped Ghetto Map","Shaped Oasis Map",
+    "Shaped Arid Lake Map","Shaped Cavern Map","Shaped Channel Map","Shaped Grotto Map",
+    "Shaped Marshes Map","Shaped Sewer Map","Shaped Vaal Pyramid Map","Shaped Academy Map",
+    "Shaped Acid Lakes Map","Shaped Dungeon Map","Shaped Graveyard Map","Shaped Phantasmagoria Map",
+    "Shaped Villa Map","Shaped Waste Pool Map","Shaped Burial Chambers Map","Shaped Peninsula Map",
+    "Shaped Dunes Map","Shaped Mesa Map","Shaped Pit Map","Shaped Primordial Pool Map","Shaped Canyon Map",
+    "Shaped Quarry Map","Shaped Racecourse Map","Shaped Ramparts Map","Shaped Spider Forest Map",
+    "Shaped Strand Map","Shaped Thicket Map","Shaped Vaal City Map","Shaped Wharf Map",
+    "Shaped Spider Lair Map","Shaped Tower Map"]
+highTierMapBases = ["Crematorium Map","Estuary Map","Necropolis Map","Plateau Map","Ivory Temple Map",
+    "Residence Map","Shipyard Map","Vault Map","Lair Map","Beacon Map",
+    "Gorge Map","High Gardens Map","Plaza Map","Scriptorium Map","Sulphur Wastes Map",
+    "Waterways Map","Maze Map","Mineral Pools Map","Palace Map","Shrine Map","Springs Map",
+    "Volcano Map","Abyss Map","Colosseum Map","Core Map","Dark Forest Map","Overgrown Ruin Map",
+    "Pit of the Chimera Map","Lair of the Hydra Map","Maze of the Minotaur Map",
+    "Forge of the Phoenix Map","Vaal Temple Map"]
+highTierShapedBases = ["Shaped Arachnid Tomb Map","Shaped Castle Ruins Map","Shaped Catacombs Map",
+    "Shaped Cells Map","Shaped Armory Map","Shaped Ashen Wood Map","Shaped Mud Geyser Map",
+    "Shaped Arachnid Nest Map","Shaped Arena Map","Shaped Bog Map","Shaped Cemetery Map",
+    "Shaped Barrows Map","Shaped Atoll Map","Shaped Pier Map","Shaped Shore Map",
+    "Shaped Tropical Island Map","Shaped Coves Map","Shaped Crypt Map","Shaped Museum Map",
+    "Shaped Orchard Map","Shaped Overgrown Shrine Map","Shaped Promenade Map","Shaped Reef Map",
+    "Shaped Temple Map","Shaped Colonnade Map","Shaped Arsenal Map","Shaped Courtyard Map",
+    "Shaped Malformation Map","Shaped Quay Map","Shaped Terrace Map","Shaped Underground River Map"]
+
+-- armour
 pureArmourBases = [pureArmourBA, pureArmourBoots, pureArmourGloves, pureArmourHelmets, pureArmourShields]
 pureEvasionBases = [pureEvasionBA, pureEvasionBoots, pureEvasionGloves, pureEvasionHelmets, pureEvasionShields]
 pureEnergyShieldBases = [pureEnergyShieldBA, pureEnergyShieldBoots, pureEnergyShieldGloves, pureEnergyShieldHelmets, pureEnergyShieldShields]

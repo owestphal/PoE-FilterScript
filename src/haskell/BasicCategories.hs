@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
 module BasicCategories (
   module BasicCategories,
   module BaseTypeList
@@ -91,3 +92,13 @@ mirrors = baseType "Mirror of Kalandra"
 
 maps = itemClass Maps
 mapFragments = itemClass MapFragments
+
+lowTierMaps = unionAll $ map (intersect maps . baseType) lowTierMapBases
+lowTierShapedMaps = unionAll $ map (intersect maps . baseType) lowTierShapedBases
+midTierMaps = unionAll $ map (intersect maps . baseType) midTierMapBases
+midTierShapedMaps = unionAll $ map (intersect maps . baseType) midTierShapedBases
+highTierMaps = unionAll $ map (intersect maps . baseType) highTierMapBases
+highTierShapedMaps = unionAll $ map (intersect maps . baseType) highTierShapedBases
+
+atlasItems = intersect currency $
+ baseTypes ["Cartographer's Sextant", "Cartographer's Seal","Unshaping Orb"]
