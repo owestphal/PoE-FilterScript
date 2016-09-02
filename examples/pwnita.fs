@@ -37,22 +37,8 @@ Style recipeStyle = currencyColorBackground + whiteBorder + smallFont
 ########
 # Maps #
 ########
-# needed to resolve name clash with BaseType "Shrine"
-Set overgrownShrineMap = BaseType "Overgrown Shrine"
-
-Set midTierMaps = BaseType "Waste Pool" "Mine" "Jungle Valley" "Terrace" "Torture Chamber"
-                    "Canyon" "Dry Peninsula" "Dark Forest" "Cells" "Orchard"
-                    "Gorge" "Arid Lake" "Underground River" "Residence" "Malformation"
-                    "Plateau" "Volcano" "Bazaar" "Necropolis"
-                    "Precinct" "Academy" "Crematorium" "Chateau"
-Set highTierMaps = BaseType "Shipyard" "Overgrown Ruin" "Arsenal" "Village Ruin"
-                    "Wasteland" "Waterways" "Courtyard" "Excavation"
-                    "Conservatory" "Shrine" "Palace"
-                    "Colosseum" "Abyss" "Core" "Plaza"
-
-Global overgrownShrineMap whiteBorder
+Global highTierMaps redMapBorder
        midTierMaps yellowMapBorder
-       highTierMaps redMapBorder
 {
   Show maps whiteBorder
 }
@@ -80,6 +66,7 @@ Style mirrorStyle = TextColor 0 0 0 + BackgroundColor 255 128 255
                   + BorderColor 0 0 0 + FontSize 45 + AlertSound 8 100
 
 Show topTierCurrency topCurrStyle
+Show atlasItems midCurrStyle
 Show midTierCurrency midCurrStyle
 Show mirrors mirrorStyle
 
@@ -193,9 +180,7 @@ Set lowMagics = magics & ItemLevel <= 40
 
 # Low Whites
 Set lowWhites = normals &
-    ( ItemLevel < 3
-    + (ItemLevel < 6 & DropLevel >= 3)
-    + (ItemLevel < 9 & DropLevel >= 6)
+    ( ItemLevel < 11
     + (ItemLevel < 12 & DropLevel >= 9)
     + (ItemLevel < 16 & DropLevel >= 12)
     + (ItemLevel < 20 & DropLevel >= 16)
