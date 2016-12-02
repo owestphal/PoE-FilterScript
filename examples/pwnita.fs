@@ -16,10 +16,15 @@ Style blueBorder = BorderColor 82 82 227
 Style yellowBorder = BorderColor 220 200 16
 Style magentaBorder = BorderColor 195 57 166
 Style cyanBorder = BorderColor 33 112 96
+Style silverBorder = BorderColor 170 170 170
 
 Style whiteBorder = BorderColor 255 255 255
 Style yellowMapBorder = BorderColor 171 143 0
 Style redMapBorder = BorderColor 112 0 0
+
+Style whiteBackground = BackgroundColor 255 255 255
+Style yellowBackground = BackgroundColor 171 143 0
+Style redBackground = BackgroundColor 112 0 0
 
 Style currencyColorBorder = BorderColor 230 214 177
 
@@ -28,24 +33,36 @@ Style tealBackground = BackgroundColor 210 255 255 200
 Style greenBackground = BackgroundColor 11 84 21 230
 Style orangeBackground = BackgroundColor 175 96 37 200
 
+Style blackText = TextColor 0 0 0
 Style redText = TextColor 125 16 16
 Style purpleText = TextColor 138 21 193
 Style mintText = TextColor 128 254 128
+Style silverText = TextColor 170 170 170
+Style lightBlueText = TextColor 75 180 215
 
 Style recipeStyle = currencyColorBackground + whiteBorder + smallFont
 
 ########
 # Maps #
 ########
-Global highTierMaps redMapBorder
-       midTierMaps yellowMapBorder
+Style highMapStyle = blackText + redBackground
+Style midMapStyle = blackText + yellowBackground
+Style lowMapStyle = blackText + whiteBackground
+
+Global highTierShapedMaps highMapStyle
+       highTierMaps highMapStyle
+       midTierShapedMaps midMapStyle
+       midTierMaps midMapStyle
 {
-  Show maps whiteBorder
+  Show lowTierShapedMaps lowMapStyle
+  Show maps lowMapStyle
 }
 Set vaalFragments = mapFragments & (BaseType "Sacrifice" + BaseType "Mortal")
 Set councilFragments = mapFragments & BaseType "Key"
+Set breachFragments = mapFragments & BaseType "Breachstone"
 Show vaalFragments redText
 Show councilFragments defaultStyle
+Show breachFragments purpleText
 
 Set labyrinthMap = BaseType "Offering to the Goddess"
 Show labyrinthMap mintText
@@ -60,6 +77,20 @@ Set midTierCurrency = BaseType "Chaos Orb" "Gemcutter's Prism" "Regal Orb"
                                 "Orb of Scouring" "Blessed Orb" "Orb of Regret"
                                 "Cartographer's Chisel"
 
+Set breachStuff = (BaseType "Splinter" + BaseType "Blessing") & currency
+
+Show breachStuff purpleText
+
+Set silverCoins = BaseType "Silver Coin" & currency
+Set essences = BaseType "Essence" & currency
+Set remnants = BaseType "Remnant of Corruption" & currency
+
+Style silverCoinStyle = silverText + silverBorder + bigFontSize
+
+Show silverCoins silverText
+Show essences lightBlueText
+Show remnants redText
+
 Style topCurrStyle = currencyColorBorder + veryBigFont
 Style midCurrStyle = currencyColorBorder + bigFont
 Style mirrorStyle = TextColor 0 0 0 + BackgroundColor 255 128 255
@@ -69,6 +100,9 @@ Show topTierCurrency topCurrStyle
 Show atlasItems midCurrStyle
 Show midTierCurrency midCurrStyle
 Show mirrors mirrorStyle
+
+Set scrolls = BaseType "Scroll"
+Show scrolls bigFont
 
 ###########################################
 # Random Stuff to pick up or Worth seeing #
@@ -95,6 +129,10 @@ Set highLinks = fiveLinks + sixLinks
 Set highUniques = uniques & DropLevel >= 68
 
 # Good Bases
+Set breachRings = BaseType "Breach Ring" & jewellery
+Style breachRingStyle = purpleBorder + bigFont
+Show breachRings breachRingStyle
+
 Set craftingBases = normals & (DropLevel >= 68 + jewellery)
 
 Global pureArmour redBorder
@@ -131,10 +169,9 @@ Show goodFlasks smallFont
 # Rares
 Set notableRares = (rares &
                 ((ItemLevel <= 35)
-                + (ItemLevel <= 45 & DropLevel > 35 )
-                + (ItemLevel <= 50 & DropLevel > 45 )
-                + DropLevel > 50
-                + jewellery))
+                + (ItemLevel <= 45 & DropLevel > 30 )
+                + (ItemLevel <= 50 & DropLevel > 40 )
+                + DropLevel > 50))
 
 # Chance Bases
 Set chanceBases = normals & BaseType "Occultist's Vestment" "Spine Bow" "Gold Ring"
@@ -149,8 +186,8 @@ Global pureArmour redBorder
        armourEnergyShield magentaBorder
        evasionEnergyShield cyanBorder
 {
+    Show jewellery bigFont
     Show notableRares defaultStyle
-
 }
 
 # Hammers
