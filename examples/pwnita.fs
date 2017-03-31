@@ -49,14 +49,10 @@ Style highMapStyle = blackText + redBackground
 Style midMapStyle = blackText + yellowBackground
 Style lowMapStyle = blackText + whiteBackground
 
-Global highTierShapedMaps highMapStyle
-       highTierMaps highMapStyle
-       midTierShapedMaps midMapStyle
-       midTierMaps midMapStyle
-{
-  Show lowTierShapedMaps lowMapStyle
-  Show maps lowMapStyle
-}
+Show highTierMaps highMapStyle
+Show midTierMaps midMapStyle
+Show maps lowMapStyle
+
 Set vaalFragments = mapFragments & (BaseType "Sacrifice" + BaseType "Mortal")
 Set councilFragments = mapFragments & BaseType "Key"
 Set breachFragments = mapFragments & BaseType "Breachstone"
@@ -81,13 +77,16 @@ Set breachStuff = (BaseType "Splinter" + BaseType "Blessing") & currency
 
 Show breachStuff purpleText
 
+Set legacyStuff = (BaseType "Leaguestone") + (BaseType "Ancient Reliquary Key")
+Show legacyStuff yellowBackground
+
 Set silverCoins = BaseType "Silver Coin" & currency
 Set essences = BaseType "Essence" & currency
 Set remnants = BaseType "Remnant of Corruption" & currency
 
-Style silverCoinStyle = silverText + silverBorder + bigFontSize
+Style silverCoinStyle = silverText + silverBorder + bigFont
 
-Show silverCoins silverText
+Show silverCoins silverCoinStyle
 Show essences lightBlueText
 Show remnants redText
 
@@ -107,6 +106,11 @@ Show scrolls bigFont
 ###########################################
 # Random Stuff to pick up or Worth seeing #
 ###########################################
+# Talisman
+Style talismanStyle = BorderColor 210 0 0 + AlertSound 2 100
+Set coins = BaseType "Perandus Coin"
+Style coinStyle = BorderColor 170 158 130 + bigFont
+
 # Quality Gems
 Set qualityGems = gems & Quality >= 5
 Show qualityGems gemColoredBorder
@@ -133,7 +137,8 @@ Set breachRings = BaseType "Breach Ring" & jewellery
 Style breachRingStyle = purpleBorder + bigFont
 Show breachRings breachRingStyle
 
-Set craftingBases = normals & (DropLevel >= 68 + jewellery)
+Set craftingBases = normals & (armour + weapons) &
+    ((DropLevel >= 55 & ItemLevel < 70) + DropLevel >= 68 + jewellery)
 
 Global pureArmour redBorder
        pureEvasion greenBorder
@@ -239,9 +244,7 @@ Global pureArmour redBorder
 #####################
 # Past League Stuff #
 #####################
-# Style talismanStyle = BorderColor 210 0 0 + AlertSound 2 100
-# Set coins = BaseType "Perandus Coin"
-# Style coinStyle = BorderColor 170 158 130 + bigFont
+
 
 #############
 # Hide Rest #

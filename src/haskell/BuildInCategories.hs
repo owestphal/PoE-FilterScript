@@ -9,11 +9,8 @@ buildInCats = zipWith (\x y -> (x, PropCat y)) names functions
 
 names = [
   "lowTierMaps",
-  "lowTierShapedMaps",
   "midTierMaps",
-  "midTierShapedMaps",
   "highTierMaps",
-  "highTierShapedMaps",
   "atlasItems",
   "jewels",
   "divinationCards",
@@ -87,11 +84,8 @@ names = [
 
 functions =[
   lowTierMaps,
-  lowTierShapedMaps,
   midTierMaps,
-  midTierShapedMaps,
   highTierMaps,
-  highTierShapedMaps,
   atlasItems,
   jewels,
   divinationCards,
